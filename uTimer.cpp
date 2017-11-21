@@ -9,39 +9,29 @@ uTimer::uTimer()
 	dbl_SecondsPerCount = 1.0 / (double)countsPerSec;
 }
 
-float uTimer::TotalTime()const
-{
-	if( b_Stopped )
-	{
-		return (float)(((ll_Stop - ll_Paused)-ll_Base)*dbl_SecondsPerCount);
-	}else {
-		return (float)(((ll_Current-ll_Paused)-ll_Base)*dlb_SecondsPerCount);
-	}
+float uTimer::TotalTime()const {
+	if( b_Stopped ) { return (float)(((ll_Stop - ll_Paused)-ll_Base)*dbl_SecondsPerCount); }
+	else {	return (float)(((ll_Current-ll_Paused)-ll_Base)*dlb_SecondsPerCount); }
 }
 
-float uTimer::DeltaTime()const
-{
+float uTimer::DeltaTime()const {
 	return (float)dbl_DeltaTime;
 }
 
-void uTimer::Reset()
-{
+void uTimer::Reset() {
 	__int64 currTime;
 	QueryPerformanceCounter((LARGE_INTEGER*)&currTime);
 
-	ll_Base = currTime;
-	ll_Prev = currTime;
+	ll_Prev = ll_Base = currTime;
 	ll_Stop = 0;
 	b_Stopped  = false;
 }
 
-void uTimer::Start()
-{
+void uTimer::Start() {
 	__int64 startTime;
 	QueryPerformanceCounter((LARGE_INTEGER*)&startTime); 
 
-	if( b_Stopped )
-	{
+	if( b_Stopped ) {
 		ll_Paused += (startTime - ll_Stop);	
 
 		ll_Prev = startTime;
@@ -50,10 +40,8 @@ void uTimer::Start()
 	}
 }
 
-void uTimer::Stop()
-{
-	if( !b_Stopped )
-	{
+void uTimer::Stop() {
+	if( !b_Stopped ) {
 		__int64 currTime;
 		QueryPerformanceCounter((LARGE_INTEGER*)&currTime);
 
@@ -62,10 +50,8 @@ void uTimer::Stop()
 	}
 }
 
-void uTimer::Tick()
-{
-	if( b_Stopped )
-	{
+void uTimer::Tick() {
+	if( b_Stopped ) {
 		mDeltaTime = 0.0;
 		return;
 	}
@@ -78,8 +64,7 @@ void uTimer::Tick()
 
 	ll_Prev = ll_Current;
 
-	if(ll_Delta < 0.0)
-	{
+	if(ll_Delta < 0.0) {
 		ll_Delta = 0.0;
 	}
 }
